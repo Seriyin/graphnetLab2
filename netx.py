@@ -1,10 +1,11 @@
-import networkx as nx
-from random import choice
-from itertools import starmap, permutations, repeat, zip_longest
-from matplotlib import figure, axes
-from matplotlib.backends.backend_pdf import FigureCanvasPdf
 from collections import deque
+from itertools import permutations, repeat, zip_longest
+from random import choice
 from typing import List, Tuple
+
+import networkx as nx
+from matplotlib import figure
+from matplotlib.backends.backend_pdf import FigureCanvasPdf
 
 
 class Grapher:
@@ -45,7 +46,8 @@ class Grapher:
                 break
         return self.start_round(1, next_neighbors, percent)
 
-    def start_round(self, n: int, next_neighbors: List[int], percent: int) -> Tuple[List[int], bool]:
+    def start_round(self, n: int, next_neighbors: List[int], percent: int) \
+            -> Tuple[List[int], bool]:
         print(f"Starting round {n}, with {next_neighbors} and {percent}% diffusion")
         # Check queues are not empty (term)
         if sum([len(self.graph.nodes[i]['q']) for i in self.graph.nodes]) != 0:
@@ -81,7 +83,8 @@ class Grapher:
             cumm += len(sampleset)-1
         return cumm/samples
 
-    def sample_graphs(self, samples: int, size: int, percent: int) -> Tuple[List[float], List[int], List[int]]:
+    def sample_graphs(self, samples: int, size: int, percent: int) \
+            -> Tuple[List[float], List[int], List[int]]:
         sampleset = []
         count = []
         term = []
