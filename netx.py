@@ -6,6 +6,7 @@ from matplotlib.backends.backend_pdf import FigureCanvasPdf
 from collections import deque
 from typing import List, Tuple
 
+
 class Grapher:
 
     def __init__(self):
@@ -27,7 +28,7 @@ class Grapher:
             prod.remove((x, y))
             self.graph.add_edge(x, y)
 
-    def broadcast(self, percent: int) -> List[int]:
+    def broadcast(self, percent: int) -> Tuple[List[int], bool]:
         self.round_known = [0]
         self.cumm = 0
         self.term = list(repeat(False, len(self.graph)))
@@ -129,7 +130,6 @@ def main() -> None:
         ax[2].bar(range(len(term)), term, color='#064930')
         f.savefig(f"roundgraphdiffusal{j}.pdf", papertype='a4', dpi=200)
         f.clear()
-
 
 
 main()
