@@ -1,6 +1,6 @@
 from collections import deque
 from itertools import permutations, repeat, zip_longest
-from random import choice
+from random import choice, random
 from typing import List, Tuple
 
 import networkx as nx
@@ -87,6 +87,7 @@ class Grapher:
             -> Tuple[List[float], List[int], List[int]]:
         sampleset = []
         count = []
+        cumm = []
         term = []
         for _ in range(0, samples):
             self.generate_n(size)
@@ -95,12 +96,12 @@ class Grapher:
             sampleset = [x + y for x, y in zip_longest(sampleset, p, fillvalue=0)]
             temp = [x for x in repeat(1, len(p))]
             count = [x + y for x, y in zip_longest(temp, count, fillvalue=0)]
+            temp = list(repeat(0, len(count)))
+            temp[len(p) - 1] = 1
+            cumm = [x + y for x, y in zip_longest(temp, cumm, fillvalue=0)]
             if b:
-                temp = list(repeat(0, len(count)))
-                temp[len(p)-1] = 1
                 term = [x + y for x, y in zip_longest(temp, term, fillvalue=0)]
         sampleset = [x / y for x, y in zip(sampleset, count)]
-        cumm = [count[i] - x for i, x in enumerate(count[1:len(count)])]
         return sampleset, cumm, term
 
 
@@ -118,10 +119,11 @@ def main() -> None:
     ax.plot(range(5, 100, 5), samplemat)
     f.savefig("roundgraphsampling.pdf", papertype='a4', dpi=200)
     f.clear()
-    for j in range(100, 5, -5):
-        samplemat, cumm, term = graph.sample_graphs(30, 100, j)
+    t = int(random()*200+100)
+    for j in range(100, 45, -5):
+        samplemat, cumm, term = graph.sample_graphs(30, t, j)
         ax = f.subplots(1, 3)
-        f.suptitle(f"30 samples, 100 node graphs, {j}% neighbors chosen")
+        f.suptitle(f"30 samples, {t} node graphs, {j}% neighbors chosen")
         ax[0].set_xlabel("Number of rounds")
         ax[0].set_ylabel("Average number of receipts")
         ax[0].plot(samplemat)
